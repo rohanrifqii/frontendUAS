@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../components/layout/Header';
 import HeroSection from '../components/sections/HeroSection';
-import Test from './TestBackend';
 
 const App: React.FC = () => {
   return (
@@ -9,9 +8,7 @@ const App: React.FC = () => {
       <Header />
       <main>
         <HeroSection />
-        
       </main>
-      <Test />
     </div>
   );
 };

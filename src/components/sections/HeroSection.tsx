@@ -1,5 +1,5 @@
-import React from 'react';
-import Button from '../ui/Button';
+import React from "react";
+import Button from "../ui/Button";
 
 const HeroSection: React.FC = () => {
   return (
@@ -13,11 +13,14 @@ const HeroSection: React.FC = () => {
           Optimalkan Kredit Hijau dan Dampak Bisnis anda.
         </p>
         <div className="flex flex-wrap gap-4 pt-4">
-          <Button variant="outline">Login</Button>
-          <Button variant="solid">Daftar</Button>
+          <Button variant="outline" onClick={() => (window.location.href = "/login")}>
+            Login
+          </Button>
+          <Button variant="solid" onClick={() => (window.location.href = "/register")}>
+            Daftar
+          </Button>
         </div>
       </div>
-      
     </section>
   );
 };
