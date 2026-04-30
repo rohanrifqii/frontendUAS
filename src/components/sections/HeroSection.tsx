@@ -13,10 +13,10 @@ const HeroSection: React.FC = () => {
           Optimalkan Kredit Hijau dan Dampak Bisnis anda.
         </p>
         <div className="flex flex-wrap gap-4 pt-4">
-          <Button variant="outline" onClick={() => (window.location.href = "/login")}>
+          <Button variant="outline" onClick={() => window.location.assign("/login")}>
             Login
           </Button>
-          <Button variant="solid" onClick={() => (window.location.href = "/register")}>
+          <Button variant="solid" onClick={() => window.location.assign("/register")}>
             Daftar
           </Button>
         </div>

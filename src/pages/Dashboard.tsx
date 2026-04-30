@@ -1,55 +1,49 @@
 import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
 import api from "../lib/api";
 
 type User = {
   user_id: number;
   nama: string;
+  username: string;
   email: string;
   id_role: number;
 };
 
-type Pertanyaan = {
-  pertanyaan_id: number;
-  pertanyaan: string;
+type Usaha = {
+  id_usaha: number;
+  nama_usaha: string;
+  bidang_usaha: string;
+  alamat: string;
+  status_verifikasi?: string | null;
+  tanggal_registrasi?: string | null;
 };
 
 function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
-  const [pertanyaan, setPertanyaan] = useState<Pertanyaan[]>([]);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [usaha, setUsaha] = useState<Usaha[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     async function loadDashboard() {
       try {
-        const [meResponse, pertanyaanResponse] = await Promise.all([
+        const [meResponse, usahaResponse] = await Promise.all([
           api.get("/me"),
-          api.get("/pertanyaan"),
+          api.get<{ data: Usaha[] }>("/usaha"),
         ]);
 
         const loggedInUser = meResponse.data.user as User;
 
         if (loggedInUser.id_role === 2) {
-          window.location.href = "/admin/dashboard";
+          window.location.assign("/admin/dashboard");
           return;
         }
 
-        const loadedPertanyaan = pertanyaanResponse.data.data as Pertanyaan[];
-
         setUser(loggedInUser);
-        setPertanyaan(loadedPertanyaan);
-        setAnswers(
-          Object.fromEntries(
-            loadedPertanyaan.map((item) => [item.pertanyaan_id, ""])
-          )
-        );
+        setUsaha(usahaResponse.data.data);
       } catch {
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        window.location.assign("/login");
       } finally {
         setIsLoading(false);
       }
@@ -57,47 +51,6 @@ function Dashboard() {
 
     loadDashboard();
   }, []);
-
-  function handleAnswerChange(pertanyaanId: number, value: string) {
-    setAnswers((currentAnswers) => ({
-      ...currentAnswers,
-      [pertanyaanId]: value,
-    }));
-  }
-
-  async function submitAnswers(e: FormEvent) {
-    e.preventDefault();
-
-    const payload = pertanyaan.map((item) => ({
-      pertanyaan_id: item.pertanyaan_id,
-      jawaban: answers[item.pertanyaan_id]?.trim() ?? "",
-    }));
-
-    const hasEmptyAnswer = payload.some((item) => item.jawaban.length === 0);
-
-    if (hasEmptyAnswer) {
-      setSuccess("");
-      setError("Isi semua jawaban dulu sebelum submit.");
-      return;
-    }
-
-    try {
-      setError("");
-      setSuccess("");
-      setIsSubmitting(true);
-
-      await api.post("/jawaban", {
-        jawaban: payload,
-      });
-
-      setSuccess("Jawaban berhasil dikirim.");
-    } catch {
-      setSuccess("");
-      setError("Gagal mengirim jawaban.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
   async function logout() {
     try {
@@ -107,49 +60,126 @@ function Dashboard() {
       setError("Logout gagal di server, token lokal tetap dihapus.");
     } finally {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      localStorage.removeItem("active_usaha_id");
+      window.location.assign("/login");
     }
   }
 
-  if (isLoading) return <p>Loading...</p>;
+  function continueToForm(usahaId: number) {
+    localStorage.setItem("active_usaha_id", String(usahaId));
+    window.location.assign("/form-pertanyaan");
+  }
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-slate-50 px-6 py-10 text-ftech-dark">
+        <p>Loading...</p>
+      </main>
+    );
+  }
   if (!user) return null;
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Halo, {user.nama}</p>
-      <p>Email: {user.email}</p>
-
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
-
-      <h2>Pertanyaan</h2>
-
-      {pertanyaan.length === 0 ? (
-        <p>Belum ada pertanyaan.</p>
-      ) : (
-        <form onSubmit={submitAnswers}>
-          {pertanyaan.map((item) => (
-            <label key={item.pertanyaan_id}>
-              <p>{item.pertanyaan}</p>
-              <textarea
-                value={answers[item.pertanyaan_id] ?? ""}
-                onChange={(e) =>
-                  handleAnswerChange(item.pertanyaan_id, e.target.value)
-                }
-                placeholder="Tulis jawaban"
-              />
-            </label>
-          ))}
-
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Mengirim..." : "Submit Jawaban"}
+    <main className="min-h-screen bg-slate-50 px-6 py-8 text-ftech-dark">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        <header className="flex flex-col gap-4 rounded-lg bg-ftech-dark p-6 text-white shadow md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-ftech-orange">
+              Dashboard User
+            </p>
+            <h1 className="mt-1 text-3xl font-bold">Halo, {user.nama}</h1>
+          </div>
+          <button
+            className="w-full rounded-md border border-white/25 px-4 py-2 font-semibold text-white transition hover:bg-white/10 md:w-auto"
+            onClick={logout}
+          >
+            Logout
           </button>
-        </form>
-      )}
+        </header>
 
-      <button onClick={logout}>Logout</button>
-    </div>
+        {error && (
+          <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
+
+        <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold">Profil User</h2>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <p className="rounded-md bg-slate-50 p-4">
+              <span className="block text-sm font-semibold text-slate-500">
+                Nama
+              </span>
+              {user.nama}
+            </p>
+            <p className="rounded-md bg-slate-50 p-4">
+              <span className="block text-sm font-semibold text-slate-500">
+                Username
+              </span>
+              {user.username}
+            </p>
+            <p className="rounded-md bg-slate-50 p-4">
+              <span className="block text-sm font-semibold text-slate-500">
+                Email
+              </span>
+              {user.email}
+            </p>
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Usaha</h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Total usaha: {usaha.length}
+              </p>
+            </div>
+
+            <button
+              className="rounded-md bg-ftech-orange px-5 py-3 font-semibold text-white transition hover:bg-ftech-orange/90"
+              onClick={() => window.location.assign("/usaha/tambah")}
+            >
+              Tambah Usaha
+            </button>
+          </div>
+
+          {usaha.length === 0 ? (
+            <div className="mt-6 rounded-md border border-dashed border-slate-300 bg-slate-50 p-6 text-slate-600">
+              <p>Belum ada usaha. Tambahkan usaha dulu untuk lanjut ke form.</p>
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {usaha.map((item) => (
+                <article
+                  className="rounded-lg border border-slate-200 bg-slate-50 p-5"
+                  key={item.id_usaha}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-lg font-bold">{item.nama_usaha}</h3>
+                    <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase text-amber-700">
+                      {item.status_verifikasi ?? "menunggu"}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Bidang: {item.bidang_usaha}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Alamat: {item.alamat}
+                  </p>
+                  <button
+                    className="mt-4 rounded-md bg-ftech-dark px-4 py-2 font-semibold text-white transition hover:bg-ftech-medium"
+                    onClick={() => continueToForm(item.id_usaha)}
+                  >
+                    Lanjut ke Form Pertanyaan
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
   );
 }
 
