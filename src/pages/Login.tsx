@@ -1,35 +1,41 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
-import { isAxiosError } from 'axios';
-import api from '../lib/api';
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { isAxiosError } from "axios";
+import api from "../lib/api";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
-      setError('');
+      setError("");
       setIsSubmitting(true);
 
-      const response = await api.post('/login', {
+      const response = await api.post("/login", {
         email,
         password,
       });
 
-      localStorage.setItem('token', response.data.token);
-      window.location.href = '/dashboard';
+      localStorage.setItem("token", response.data.token);
+
+      if (response.data.user.id_role === 2) {
+        window.location.href = "/admin/dashboard";
+      } else {
+        window.location.href = "/dashboard";
+      }
+      
     } catch (err) {
       if (isAxiosError<{ message?: string }>(err)) {
-        setError(err.response?.data?.message ?? 'Login gagal');
+        setError(err.response?.data?.message ?? "Login gagal");
         return;
       }
 
-      setError('Login gagal');
+      setError("Login gagal");
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +62,7 @@ function Login() {
       />
 
       <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Loading...' : 'Login'}
+        {isSubmitting ? "Loading..." : "Login"}
       </button>
     </form>
   );
