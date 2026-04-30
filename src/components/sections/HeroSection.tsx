@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardVisual from './DashboardVisual';
+import Button from '../ui/Button';
 
 const HeroSection: React.FC = () => {
   return (
@@ -13,19 +13,11 @@ const HeroSection: React.FC = () => {
           Optimalkan Kredit Hijau dan Dampak Bisnis anda.
         </p>
         <div className="flex flex-wrap gap-4 pt-4">
-          <button className="px-8 py-3 rounded-xl text-lg font-semibold text-white border-2 border-white hover:bg-white/10 transition-all shadow-md">
-            Login
-          </button>
-          <button className="px-8 py-3 rounded-xl text-lg font-semibold text-white bg-ftech-orange hover:bg-ftech-orange/90 transition-all shadow-xl">
-            Daftar
-          </button>
+          <Button variant="outline">Login</Button>
+          <Button variant="solid">Daftar</Button>
         </div>
       </div>
-
-      {/* Kolom Kanan - Visual Dasbor di Monitor */}
-      <div className="flex items-center justify-center h-full">
-         <DashboardVisual />
-      </div>
+      
     </section>
   );
 };
