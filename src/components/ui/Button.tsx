@@ -13,11 +13,11 @@ const Button: React.FC<ButtonProps> = ({
   onClick, 
   className = '' 
 }) => {
-  const baseStyle = "px-8 py-3 rounded-xl text-lg font-semibold transition-all shadow-md";
+  const baseStyle = "px-8 py-3 rounded-xl text-lg font-semibold transition-all duration-300";
   
   const variants = {
-    outline: "text-white border-2 border-white hover:bg-white/10",
-    solid: "text-white bg-ftech-orange hover:bg-ftech-orange/90 shadow-xl"
+    outline: "text-white border-2 border-white/30 hover:border-white hover:bg-white/10 backdrop-blur-sm",
+    solid: "text-white bg-gradient-to-r from-ftech-orange to-orange-400 hover:shadow-lg hover:shadow-ftech-orange/40 hover:scale-[1.02] active:scale-[0.98]"
   };
   
   return (

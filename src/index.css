@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-ftech-dark text-ftech-text font-body min-h-screen overflow-x-hidden;
+    scroll-behavior: smooth;
+  }
+}

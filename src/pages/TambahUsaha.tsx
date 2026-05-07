@@ -80,25 +80,29 @@ function TambahUsaha() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-8 text-ftech-dark">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 px-6 py-8 text-ftech-dark">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-        <header className="rounded-lg bg-ftech-dark p-6 text-white shadow">
-          <p className="text-sm font-semibold uppercase tracking-wider text-ftech-orange">
-            Registrasi Usaha
-          </p>
-          <h1 className="mt-1 text-3xl font-bold">Tambah Usaha</h1>
-          <p className="mt-2 text-sm text-white/75">
-            Data dokumen ini masih dummy untuk simulasi verifikasi admin.
-          </p>
+        {/* Header Card */}
+        <header className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-ftech-dark via-ftech-medium to-ftech-dark p-6 text-white shadow-xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-ftech-orange/10 rounded-full blur-3xl" />
+          <div className="relative">
+            <p className="text-sm font-semibold uppercase tracking-wider text-ftech-orange">
+              Registrasi Usaha
+            </p>
+            <h1 className="mt-1 text-3xl font-bold">Tambah Usaha Baru</h1>
+            <p className="mt-2 text-sm text-white/70">
+              Isi data usaha Anda untuk memulai evaluasi ESG
+            </p>
+          </div>
         </header>
 
         {error && (
-          <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
           </p>
         )}
         {success && (
-          <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
             {success}
           </p>
         )}
@@ -106,15 +110,20 @@ function TambahUsaha() {
         {!createdUsahaId ? (
           <form
             onSubmit={handleSubmit}
-            className="grid gap-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+            className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg"
           >
             <section>
-              <h2 className="text-xl font-bold">Data Usaha</h2>
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-ftech-orange/10 flex items-center justify-center">
+                  <span className="text-ftech-orange font-bold">1</span>
+                </div>
+                <h2 className="text-xl font-bold">Data Usaha</h2>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
                 <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                  Nama usaha
+                  <span className="text-slate-600">Nama usaha</span>
                   <input
-                    className="rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                    className="rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                     placeholder="Contoh: Warung Sejahtera"
                     value={namaUsaha}
                     onChange={(e) => setNamaUsaha(e.target.value)}
@@ -122,9 +131,9 @@ function TambahUsaha() {
                 </label>
 
                 <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                  Bidang usaha
+                  <span className="text-slate-600">Bidang usaha</span>
                   <input
-                    className="rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                    className="rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                     placeholder="Contoh: Kuliner"
                     value={bidangUsaha}
                     onChange={(e) => setBidangUsaha(e.target.value)}
@@ -133,9 +142,9 @@ function TambahUsaha() {
               </div>
 
               <label className="mt-4 flex flex-col gap-2 text-sm font-medium text-slate-700">
-                Alamat usaha
+                <span className="text-slate-600">Alamat usaha</span>
                 <textarea
-                  className="min-h-24 rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                  className="min-h-24 rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                   placeholder="Alamat lengkap usaha"
                   value={alamat}
                   onChange={(e) => setAlamat(e.target.value)}
@@ -144,12 +153,17 @@ function TambahUsaha() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold">Dokumen Dummy</h2>
-              <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-ftech-orange/10 flex items-center justify-center">
+                  <span className="text-ftech-orange font-bold">2</span>
+                </div>
+                <h2 className="text-xl font-bold">Dokumen (Dummy)</h2>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
                 <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                  KTP
+                  <span className="text-slate-600">KTP</span>
                   <input
-                    className="rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                    className="rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                     placeholder="ktp-dummy.pdf"
                     value={ktp}
                     onChange={(e) => setKtp(e.target.value)}
@@ -157,9 +171,9 @@ function TambahUsaha() {
                 </label>
 
                 <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                  NPWP
+                  <span className="text-slate-600">NPWP</span>
                   <input
-                    className="rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                    className="rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                     placeholder="npwp-dummy.pdf"
                     value={npwp}
                     onChange={(e) => setNpwp(e.target.value)}
@@ -167,9 +181,9 @@ function TambahUsaha() {
                 </label>
 
                 <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                  Surat izin usaha
+                  <span className="text-slate-600">Surat izin usaha</span>
                   <input
-                    className="rounded-md border border-slate-300 px-3 py-3 outline-none focus:border-ftech-orange"
+                    className="rounded-lg border border-slate-200 px-4 py-3 outline-none transition-all focus:border-ftech-orange focus:ring-2 focus:ring-ftech-orange/20"
                     placeholder="siu-dummy.pdf"
                     value={suratIzinUsaha}
                     onChange={(e) => setSuratIzinUsaha(e.target.value)}
@@ -180,38 +194,65 @@ function TambahUsaha() {
 
             <div className="flex flex-col gap-3 border-t border-slate-200 pt-5 md:flex-row">
               <button
-                className="rounded-md bg-ftech-orange px-5 py-3 font-semibold text-white transition hover:bg-ftech-orange/90 disabled:cursor-not-allowed disabled:opacity-70"
+                className="group rounded-xl bg-gradient-to-r from-ftech-orange to-orange-400 px-6 py-3.5 font-semibold text-white transition-all hover:shadow-lg hover:shadow-ftech-orange/30 hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100"
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Menyimpan..." : "Simpan Usaha"}
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Menyimpan...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan Usaha
+                  </span>
+                )}
               </button>
               <button
                 type="button"
-                className="rounded-md border border-slate-300 px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300"
                 onClick={() => window.location.assign("/dashboard")}
               >
-                Kembali ke Dashboard
+                Kembali
               </button>
             </div>
           </form>
         ) : (
-          <section className="rounded-lg border border-emerald-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold text-emerald-700">
-              Usaha berhasil ditambahkan
-            </h2>
-            <p className="mt-2 text-slate-600">
-              Dokumen masuk status menunggu verifikasi admin.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 md:flex-row">
+          <section className="rounded-2xl border border-emerald-200 bg-white p-8 shadow-lg">
+            <div className="text-center">
+              <div className="mx-auto w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
+                <svg className="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-emerald-700">
+                Usaha berhasil ditambahkan!
+              </h2>
+              <p className="mt-2 text-slate-600">
+                Dokumen masuk status menunggu verifikasi admin.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-col gap-3 md:flex-row justify-center">
               <button
-                className="rounded-md bg-ftech-orange px-5 py-3 font-semibold text-white transition hover:bg-ftech-orange/90"
+                className="group rounded-xl bg-gradient-to-r from-ftech-orange to-orange-400 px-6 py-3.5 font-semibold text-white transition-all hover:shadow-lg hover:shadow-ftech-orange/30 hover:scale-[1.02]"
                 onClick={continueToForm}
               >
-                Lanjut ke Form Pertanyaan
+                <span className="flex items-center justify-center gap-2">
+                  Lanjut ke Form ESG
+                  <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
               </button>
               <button
-                className="rounded-md border border-slate-300 px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 transition-all hover:bg-slate-50"
                 onClick={() => window.location.assign("/dashboard")}
               >
                 Kembali ke Dashboard
